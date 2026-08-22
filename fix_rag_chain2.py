@@ -1,4 +1,4 @@
-import re
+content = '''import re
 from backend.core.embeddings.pinecone_store import (
     store_chunks_pinecone,
     retrieve_chunks_pinecone,
@@ -14,16 +14,16 @@ def format_context(chunks: list[dict]) -> str:
     context_parts = []
     for i, chunk in enumerate(chunks):
         context_parts.append(
-            f"[Source {i+1} | {chunk['source']} | Page {chunk['page_number']}]\n{chunk['text']}"
+            f"[Source {i+1} | {chunk[\'source\']} | Page {chunk[\'page_number\']}]\\n{chunk[\'text\']}"
         )
-    return "\n\n---\n\n".join(context_parts)
+    return "\\n\\n---\\n\\n".join(context_parts)
 
 
 def extract_citations(chunks: list[dict]) -> list[dict]:
     citations = []
     seen = set()
     for chunk in chunks:
-        key = f"{chunk['source']}_{chunk['page_number']}"
+        key = f"{chunk[\'source\']}_{chunk[\'page_number\']}"
         if key not in seen:
             seen.add(key)
             citations.append({
@@ -134,3 +134,8 @@ def ask(question: str, session_id: str, n_results: int = 5) -> dict:
         "question": question,
         "confidence": "high"
     }
+'''
+
+with open("backend/core/rag/rag_chain.py", "w", encoding="utf-8") as f:
+    f.write(content)
+print("rag_chain.py updated - lower threshold + summary mode")

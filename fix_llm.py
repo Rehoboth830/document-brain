@@ -1,4 +1,4 @@
-import os
+content = """import os
 from dotenv import load_dotenv, find_dotenv
 from langchain_groq import ChatGroq
 
@@ -24,3 +24,14 @@ def get_llm() -> ChatGroq:
         )
         print(f"LLM connected: {MODEL_NAME} via Groq")
     return _llm
+"""
+
+with open("backend/core/rag/llm.py", "w", encoding="utf-8") as f:
+    f.write(content)
+print("llm.py fixed successfully")
+
+# Verify line 32 area
+lines = open("backend/core/rag/llm.py").readlines()
+print("Total lines: " + str(len(lines)))
+for i, l in enumerate(lines, 1):
+    print(str(i) + ": " + l.rstrip())
