@@ -1,12 +1,7 @@
-﻿from backend.core.embeddings.embedder import embed_query
 from backend.core.embeddings.vector_store import get_collection
 
 
 def retrieve_chunks(query: str, n_results: int = 5) -> list[dict]:
-    """
-    Find the most relevant chunks for a given question.
-    Returns top n_results chunks ranked by similarity.
-    """
     collection = get_collection()
 
     total_chunks = collection.count()
@@ -14,13 +9,10 @@ def retrieve_chunks(query: str, n_results: int = 5) -> list[dict]:
         raise ValueError("No documents in vector store. Please upload a document first.")
 
     n_results = min(n_results, total_chunks)
-
     print(f"Retrieving top {n_results} chunks for query: {query[:60]}...")
 
-    query_embedding = embed_query(query)
-
     results = collection.query(
-        query_embeddings=[query_embedding],
+        query_texts=[query],
         n_results=n_results,
         include=["documents", "metadatas", "distances"]
     )

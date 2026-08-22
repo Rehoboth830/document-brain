@@ -1,6 +1,5 @@
-﻿import chromadb
-from chromadb.config import Settings
-from backend.core.embeddings.embedder import embed_texts
+import chromadb
+from chromadb.utils import embedding_functions
 from pathlib import Path
 
 VECTORSTORE_PATH = "data/vectorstore"
@@ -8,13 +7,17 @@ COLLECTION_NAME = "document_brain"
 
 _client = None
 _collection = None
+_ef = None
+
+
+def get_ef():
+    global _ef
+    if _ef is None:
+        _ef = embedding_functions.DefaultEmbeddingFunction()
+    return _ef
 
 
 def get_client():
-    """
-    Get or create the ChromaDB client.
-    Persists data to disk so it survives restarts.
-    """
     global _client
     if _client is None:
         Path(VECTORSTORE_PATH).mkdir(parents=True, exist_ok=True)
@@ -24,15 +27,12 @@ def get_client():
 
 
 def get_collection():
-    """
-    Get or create the ChromaDB collection.
-    A collection is like a table in a database.
-    """
     global _collection
     if _collection is None:
         client = get_client()
         _collection = client.get_or_create_collection(
             name=COLLECTION_NAME,
+            embedding_function=get_ef(),
             metadata={"hnsw:space": "cosine"}
         )
         print("Collection ready: " + COLLECTION_NAME)
@@ -40,12 +40,7 @@ def get_collection():
 
 
 def store_chunks(chunks: list[dict]) -> int:
-    """
-    Embed and store a list of chunks in ChromaDB.
-    Returns the number of chunks stored.
-    """
     collection = get_collection()
-
     texts = [chunk["text"] for chunk in chunks]
     ids = [str(chunk["chunk_id"]) for chunk in chunks]
     metadatas = [
@@ -57,44 +52,28 @@ def store_chunks(chunks: list[dict]) -> int:
         for chunk in chunks
     ]
 
-    print(f"Embedding {len(chunks)} chunks...")
-    embeddings = embed_texts(texts)
-
-    batch_size = 100
+    batch_size = 50
     stored = 0
 
     for i in range(0, len(chunks), batch_size):
-        batch_ids = ids[i:i+batch_size]
-        batch_texts = texts[i:i+batch_size]
-        batch_embeddings = embeddings[i:i+batch_size]
-        batch_metadatas = metadatas[i:i+batch_size]
-
         collection.upsert(
-            ids=batch_ids,
-            documents=batch_texts,
-            embeddings=batch_embeddings,
-            metadatas=batch_metadatas
+            ids=ids[i:i+batch_size],
+            documents=texts[i:i+batch_size],
+            metadatas=metadatas[i:i+batch_size]
         )
-        stored += len(batch_ids)
+        stored += len(ids[i:i+batch_size])
         print(f"Stored {stored}/{len(chunks)} chunks...")
 
-    print(f"Vector store complete: {stored} chunks stored in ChromaDB")
+    print(f"Vector store complete: {stored} chunks stored")
     return stored
 
 
 def get_store_count() -> int:
-    """
-    Return how many chunks are currently in the vector store.
-    """
     collection = get_collection()
     return collection.count()
 
 
 def clear_store():
-    """
-    Clear all chunks from the vector store.
-    Used when a new document session starts.
-    """
     global _client, _collection
     client = get_client()
     try:
