@@ -1,7 +1,7 @@
-import streamlit as st
+﻿import streamlit as st
 import requests
 
-API_BASE = "http://localhost:8000/api/v1"
+from frontend.config import API_BASE_URL`nAPI_BASE = API_BASE_URL
 
 
 def render_citations(citations: list):
@@ -114,3 +114,4 @@ def render_chat():
                 })
 
         st.rerun()
+

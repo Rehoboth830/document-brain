@@ -1,7 +1,7 @@
 ﻿import streamlit as st
 import requests
 
-API_BASE = "http://localhost:8000/api/v1"
+from frontend.config import API_BASE_URL`nAPI_BASE = API_BASE_URL
 
 
 def render_sidebar():
@@ -98,4 +98,5 @@ def render_sidebar():
         st.markdown("**Built by**")
         st.markdown("Akinde Olugbenga Tope")
         st.markdown("*IBM AI Engineering | GenAI | RAG*")
+
 
