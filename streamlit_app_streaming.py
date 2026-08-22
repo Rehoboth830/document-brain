@@ -271,7 +271,7 @@ else:
 
         summary_mode = is_summary_request(question)
         n_results = 10 if summary_mode else 5
-        threshold = 0.15 if summary_mode else 0.28
+        threshold = 0.20 if summary_mode else 0.30
 
         with st.spinner("Searching document..."):
             try:

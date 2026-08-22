@@ -43,9 +43,17 @@ def clean_answer(text: str) -> str:
 
 
 def is_summary_request(question: str) -> bool:
-    keywords = ["summarize", "summary", "overview", "what is this", "what is this about",
-                "describe", "explain this", "tell me about this", "what does this cover",
-                "author", "who wrote", "who is the author", "written by"]
+    keywords = [
+        'summarize', 'summary', 'overview',
+        'what is this', 'what is this about', 'what is this document',
+        'what is this pdf', 'what is the document about', 'what is the pdf about',
+        'what does this document', 'what does this pdf', 'what is it about',
+        'tell me about this', 'describe this', 'explain this document',
+        'what does this cover', 'what is covered', 'give me an overview',
+        'author', 'who wrote', 'who is the author', 'written by',
+        'what topics', 'main topics', 'key points', 'main points',
+        'what subject', 'subject of this', 'about this'
+    ]
     q = question.lower()
     return any(k in q for k in keywords)
 
@@ -98,7 +106,7 @@ def ask(question: str, session_id: str, n_results: int = 5) -> dict:
 
     avg_similarity = sum(c["similarity"] for c in chunks) / len(chunks)
 
-    threshold = 0.20 if summary_mode else 0.30
+    threshold = 0.15 if summary_mode else 0.28
 
     if avg_similarity < threshold:
         return {
