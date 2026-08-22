@@ -1,14 +1,14 @@
 langchain==0.3.25
 langchain-community==0.3.24
 langchain-groq==0.3.2
-chromadb==0.6.3
+chromadb==0.5.23
 pymupdf==1.25.5
 python-docx==1.1.2
 beautifulsoup4==4.13.4
 requests==2.32.3
-fastapi==0.115.12
-uvicorn==0.34.2
 streamlit==1.45.1
 python-multipart==0.0.20
 python-dotenv==1.1.0
+fastapi==0.115.12
+uvicorn==0.34.2
 pytest==8.3.5
