@@ -1,3 +1,4 @@
+content = '''\
 import os
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException
 from fastapi.responses import JSONResponse
@@ -67,3 +68,8 @@ async def upload_url(payload: dict):
         "chunks_stored": chunks_stored,
         "session_id": used_session
     })
+'''
+
+with open("backend/api/upload.py", "w", encoding="utf-8", newline="\n") as f:
+    f.write(content)
+print("upload.py fixed - session_id now Form field")
