@@ -76,8 +76,8 @@ export function ChatInterface({ session }: ChatInterfaceProps) {
             : m
         )
       )
-    } catch (e: any) {
-      const errorMsg = e.response?.data?.detail || "Something went wrong. Please try again."
+    } catch (e: unknown) {
+      const errorMsg = (e as any)?.response?.data?.detail || "Something went wrong. Please try again."
       setMessages(prev =>
         prev.map(m =>
           m.id === assistantId

@@ -2,7 +2,7 @@
 import { useState, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Upload, Link, FileText, CheckCircle, Loader2, X, Globe } from "lucide-react"
-import { uploadFile, uploadUrl, clearSession, getSessionId } from "@/lib/api"
+import { uploadFile, uploadUrl, clearSession } from "@/lib/api"
 import { DocumentState } from "@/types"
 
 interface UploadPanelProps {
@@ -33,9 +33,9 @@ export function UploadPanel({ session, onDocumentLoaded, onClear }: UploadPanelP
         onDocumentLoaded(file.name, result.chunks_stored)
         setProgress(0)
       }, 500)
-    } catch (e: any) {
+    } catch (e: unknown) {
       clearInterval(interval)
-      setError(e.response?.data?.detail || "Upload failed. Is the API running?")
+      setError((e as any)?.response?.data?.detail || "Upload failed. Is the API running?")
       setProgress(0)
     } finally {
       setIsLoading(false)
@@ -57,9 +57,9 @@ export function UploadPanel({ session, onDocumentLoaded, onClear }: UploadPanelP
         setUrlInput("")
         setProgress(0)
       }, 500)
-    } catch (e: any) {
+    } catch (e: unknown) {
       clearInterval(interval)
-      setError(e.response?.data?.detail || "Failed to fetch URL")
+      setError((e as any)?.response?.data?.detail || "Failed to fetch URL")
       setProgress(0)
     } finally {
       setIsLoading(false)
