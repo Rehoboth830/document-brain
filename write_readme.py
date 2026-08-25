@@ -1,3 +1,4 @@
+content = """\
 # Document Brain
 
 > **Production-grade RAG system** — Ask questions about any document with AI-powered source citations.
@@ -109,7 +110,7 @@ git clone https://github.com/Rehoboth830/document-brain.git
 cd document-brain
 
 python -m venv venv
-venv\Scripts\activate  # Windows
+venv\\Scripts\\activate  # Windows
 # source venv/bin/activate  # Mac/Linux
 
 pip install -r requirements.txt
@@ -160,8 +161,8 @@ Open `http://localhost:3000`
 ### Example Query
 
 ```bash
-curl -X POST https://document-brain-api-production-c9a2.up.railway.app/api/v1/query \
-  -H "Content-Type: application/json" \
+curl -X POST https://document-brain-api-production-c9a2.up.railway.app/api/v1/query \\
+  -H "Content-Type: application/json" \\
   -d '{"question": "What is this document about?", "session_id": "your_session_id"}'
 ```
 
@@ -214,3 +215,8 @@ document-brain/
 IBM AI Engineering Professional Certificate | IBM Generative AI Engineering | IBM Data Science | AI Automation Engineer with n8n | Prompt Engineering (Vanderbilt University)
 
 [![GitHub](https://img.shields.io/badge/GitHub-Rehoboth830-black?logo=github)](https://github.com/Rehoboth830)
+"""
+
+with open("README.md", "w", encoding="utf-8", newline="\n") as f:
+    f.write(content)
+print("README.md written successfully")
