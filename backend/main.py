@@ -15,7 +15,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -23,7 +23,6 @@ app.add_middleware(
 app.include_router(upload_router, prefix="/api/v1", tags=["Upload"])
 app.include_router(query_router, prefix="/api/v1", tags=["Query"])
 app.include_router(session_router, prefix="/api/v1", tags=["Session"])
-
 
 @app.get("/")
 async def root():
