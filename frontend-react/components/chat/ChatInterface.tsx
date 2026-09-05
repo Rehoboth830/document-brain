@@ -31,6 +31,11 @@ export function ChatInterface({ session }: ChatInterfaceProps) {
     }
   }, [messages])
 
+  // Clear chat when a new document is loaded
+  useEffect(() => {
+    setMessages([])
+  }, [session.name])
+
   const sendMessage = useCallback(async (question: string) => {
     if (!question.trim() || isLoading || !session.loaded) return
 
